@@ -1,0 +1,17 @@
+[Unit]
+Description=StarRail dynamic IP registry and alert monitor
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=test
+Group=test
+WorkingDirectory=/home/test
+EnvironmentFile=/home/test/starrail-compose/.env
+ExecStart=/usr/bin/python3 /home/test/ip_monitor.py
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target

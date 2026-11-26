@@ -1,0 +1,14 @@
+# 第二集群（后端独立）Compose override
+#
+# 公用前端 + 独立后端模式下，第二集群不再提供自己的 8080 前端，
+# 只运行 backend/postgres/redis，并把 backend 8000 暴露给公用网关。
+#
+# 使用：
+#   docker compose -f docker-compose.yml -f deploy/docker-compose.backend-only.yml up -d backend
+#   docker compose stop gateway dex oauth2-proxy
+#
+# 生产环境应通过防火墙只允许公用网关 IP 访问 8000。
+services:
+  backend:
+    ports:
+      - "192.168.112.105:8000:8000"

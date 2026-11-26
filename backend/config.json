@@ -1,0 +1,20 @@
+{
+  "cluster": "GPU-Prod-01",
+  "environment": "生产",
+  "self_use": true,
+  "gpu_model": "NVIDIA RTX PRO 5000 72GB",
+  "gpus_per_server": 8,
+  "telemetry": {
+    "interval_seconds": 15,
+    "source": "nvidia-smi"
+  },
+  "servers": [
+    {
+      "name": "gpu-01",
+      "host": "192.168.112.230",
+      "role": "gpu",
+      "gpus": 8
+    }
+  ],
+  "notes": "单台生产 GPU 服务器，8×NVIDIA RTX PRO 5000 72GB Blackwell。"
+}

@@ -1,0 +1,44 @@
+# 生产形态参考：Dex 对接 FreeIPA/OpenLDAP。
+# 将本文件替换为 /etc/dex/config.yaml 时，需要注入 LDAP_BIND_PASSWORD 与 Dex 客户端 secret。
+# 组会被原样放入 groups claim；平台后端按 hpc-admins / hpc-ops / hpc-pi-<组> / hpc-users 映射 RBAC。
+issuer: https://dex.example.internal
+storage:
+  type: memory
+web:
+  http: 0.0.0.0:5556
+  allowedOrigins:
+    - https://portal.example.internal:8080
+oauth2:
+  skipApprovalScreen: true
+  responseTypes:
+    - code
+connectors:
+  - type: ldap
+    id: freeipa
+    name: "FreeIPA"
+    config:
+      host: ipa-01.example.internal:636
+      insecureNoSSL: false
+      insecureSkipVerify: false
+      bindDN: "uid=dex-bind,cn=users,cn=accounts,dc=example,dc=internal"
+      bindPW: "$LDAP_BIND_PASSWORD"
+      userSearch:
+        baseDN: "cn=users,cn=accounts,dc=example,dc=internal"
+        filter: "(objectClass=posixAccount)"
+        username: uid
+        idAttr: uid
+        emailAttr: mail
+        nameAttr: cn
+      groupSearch:
+        baseDN: "cn=groups,cn=accounts,dc=example,dc=internal"
+        filter: "(objectClass=posixGroup)"
+        userMatchers:
+          - userAttr: uid
+            groupAttr: member
+        nameAttr: cn
+staticClients:
+  - id: portal
+    name: "星轨算力门户"
+    secret: "$OAUTH2_PROXY_CLIENT_SECRET"
+    redirectURIs:
+      - https://portal.example.internal:8080/oauth2/callback

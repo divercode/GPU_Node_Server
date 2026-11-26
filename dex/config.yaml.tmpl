@@ -1,0 +1,55 @@
+# Dex 开发/内网演示配置模板。
+# 容器启动时由 dex-config 服务把 __PUBLIC_BASE_URL__ 和 __OAUTH2_PROXY_CLIENT_SECRET__ 替换。
+# 生产请把 enablePasswordDB/staticPasswords 替换为 FreeIPA LDAP connector（见 config.ldap.example.yaml）。
+# 注意：Dex v2.41.1 的 staticPasswords 不携带 groups；内网演示角色由 backend/auth_users.json 兜底映射。
+issuer: __PUBLIC_BASE_URL__/dex
+storage:
+  type: memory
+web:
+  http: 0.0.0.0:5556
+  allowedOrigins:
+    - __PUBLIC_BASE_URL__
+oauth2:
+  skipApprovalScreen: true
+  responseTypes:
+    - code
+enablePasswordDB: true
+
+staticClients:
+  - id: portal
+    name: "星轨算力门户"
+    secret: __OAUTH2_PROXY_CLIENT_SECRET__
+    redirectURIs:
+      - __PUBLIC_BASE_URL__/oauth2/callback
+    trustedPeers:
+      - portal
+
+staticPasswords:
+  - email: linya@hpc.local
+    hash: "$2b$10$oW.aYa3XRKsx0PV7aMLKyOejzQhkGyo5oxcvByrjvA134r3TnOunO"
+    username: linya
+    name: 林予安
+    emailVerified: true
+    userID: "6f1e6f4d-4b0a-4a6f-9c8f-1a1f9b7c0001"
+  - email: chenyz@hpc.local
+    hash: "$2b$10$.AF0wt8nVIAbBBjkFpT2ZevpmxiUjqY5P8Z73ZlOnSkuyDLZK3Ysu"
+    username: chenyz
+    name: 陈砚舟
+    emailVerified: true
+    userID: "6f1e6f4d-4b0a-4a6f-9c8f-1a1f9b7c0002"
+  - email: zhangqm@hpc.local
+    hash: "$2b$10$H6suzbgXX6QMZewnz5pIseQZ1l.SwbCGf42NMN8niB0hs36sVQ7yO"
+    username: zhangqm
+    name: 张启明
+    emailVerified: true
+    userID: "6f1e6f4d-4b0a-4a6f-9c8f-1a1f9b7c0003"
+  - email: shenyr@hpc.local
+    hash: "$2b$10$BNHukVM/8DyTCLfA3.qztOPrBXkKMXEGhA0TcOU0ecJA8U0pgvGj2"
+    username: shenyr
+    name: 沈亦然
+    emailVerified: true
+    userID: "6f1e6f4d-4b0a-4a6f-9c8f-1a1f9b7c0004"
+
+logger:
+  level: info
+  format: json

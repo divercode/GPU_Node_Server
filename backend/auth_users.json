@@ -1,0 +1,48 @@
+{
+  "_comment": "本地开发账号，仅 AUTH_MODE=local 使用；生产由 Dex/FreeIPA 提供身份。密码见 backend/README.md。",
+  "users": [
+    {
+      "username": "linya",
+      "display_name": "林予安",
+      "email": "linya@hpc.local",
+      "groups": [
+        "hpc-admins",
+        "hpc-users"
+      ],
+      "account": "平台组",
+      "password_pbkdf2": "pbkdf2_sha256$260000$gHDOMj3FZj_TMkq715jxyA$W-Rg4NJxSaLSJFUSbuI1_clS9NDUh0bdNpv7SMKsPCo"
+    },
+    {
+      "username": "chenyz",
+      "display_name": "陈砚舟",
+      "email": "chenyz@hpc.local",
+      "groups": [
+        "hpc-ops",
+        "hpc-users"
+      ],
+      "account": "运维组",
+      "password_pbkdf2": "pbkdf2_sha256$260000$GheTgdL-Mh2xjZ-KlAkv-w$MaimLfwaybc_4MET_lkgMogYB8RGZA-fB878KV_1TPw"
+    },
+    {
+      "username": "zhangqm",
+      "display_name": "张启明",
+      "email": "zhangqm@hpc.local",
+      "groups": [
+        "hpc-pi-air",
+        "hpc-users"
+      ],
+      "account": "智能计算组",
+      "password_pbkdf2": "pbkdf2_sha256$260000$y0y6NOT2lDZeoNB_74EdMA$4W5o56tXLjkQzgRDKdcl8Rtnc9wGxco3ZvQlWaf_aHk"
+    },
+    {
+      "username": "shenyr",
+      "display_name": "沈亦然",
+      "email": "shenyr@hpc.local",
+      "groups": [
+        "hpc-users"
+      ],
+      "account": "智能计算组",
+      "password_pbkdf2": "pbkdf2_sha256$260000$zHQ0J1JUJ95FbwGmuV2a9g$Xs9oqcYJvo64ueEilzVPBj2PJ-LC4fNOfcDWT7UvdIc"
+    }
+  ]
+}

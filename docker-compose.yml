@@ -1,0 +1,268 @@
+# 星轨算力平台 · 平台服务层容器编排（内网单机/测试环境）
+#
+# 入口拓扑（对照设计说明书 §5.1 / §9.3 / §11.4 / §12.3）：
+#   浏览器 → :8080 Nginx gateway（静态 SPA + /api 反向代理）
+#              ├─ /oauth2/* → oauth2-proxy → Dex OIDC（/dex）
+#              └─ /api/*    → backend（只接受网关注入的身份头 + 共享密钥）
+#
+# OOD、Slurm、FreeIPA/SSSD、GPU 节点宿主机不在此 Compose 内（§11.1）。
+# 持久层：postgres 保存业务/审计链，redis 保存遥测缓存/限流/会话撤销；仅内网。
+# 当前原型用 Dex 静态密码做内网演示；生产请切到 dex/config.ldap.example.yaml。
+name: starrail-portal
+
+services:
+  dex-config:
+    image: alpine:3.20
+    container_name: starrail-dex-config
+    restart: "no"
+    environment:
+      PUBLIC_BASE_URL: ${PUBLIC_BASE_URL:?set PUBLIC_BASE_URL in .env}
+      OAUTH2_PROXY_CLIENT_SECRET: ${OAUTH2_PROXY_CLIENT_SECRET:?set OAUTH2_PROXY_CLIENT_SECRET in .env}
+    volumes:
+      - ./dex/config.yaml.tmpl:/templates/config.yaml.tmpl:ro
+      - dex-config:/out
+    command:
+      - /bin/sh
+      - -c
+      - >
+        set -eu;
+        mkdir -p /out;
+        sed
+        -e "s|__PUBLIC_BASE_URL__|$$PUBLIC_BASE_URL|g"
+        -e "s|__OAUTH2_PROXY_CLIENT_SECRET__|$$OAUTH2_PROXY_CLIENT_SECRET|g"
+        /templates/config.yaml.tmpl > /out/config.yaml;
+        chmod 0644 /out/config.yaml
+    networks:
+      - portal
+
+  dex:
+    image: ghcr.io/dexidp/dex:v2.41.1
+    container_name: starrail-dex
+    restart: unless-stopped
+    command: ["dex", "serve", "/etc/dex/config.yaml"]
+    volumes:
+      - dex-config:/etc/dex:ro
+    expose:
+      - "5556"
+    depends_on:
+      dex-config:
+        condition: service_completed_successfully
+    read_only: true
+    tmpfs:
+      - /tmp
+    security_opt:
+      - no-new-privileges:true
+    mem_limit: 256m
+    cpus: 0.5
+    logging:
+      driver: json-file
+      options: { max-size: "10m", max-file: "3" }
+    networks:
+      - portal
+
+  oauth2-proxy:
+    image: quay.io/oauth2-proxy/oauth2-proxy:v7.7.1
+    container_name: starrail-oauth2-proxy
+    restart: unless-stopped
+    environment:
+      OAUTH2_PROXY_PROVIDER: oidc
+      OAUTH2_PROXY_OIDC_ISSUER_URL: ${PUBLIC_BASE_URL:?}/dex
+      OAUTH2_PROXY_CLIENT_ID: portal
+      OAUTH2_PROXY_CLIENT_SECRET: ${OAUTH2_PROXY_CLIENT_SECRET:?}
+      OAUTH2_PROXY_COOKIE_SECRET: ${OAUTH2_PROXY_COOKIE_SECRET:?}
+      OAUTH2_PROXY_COOKIE_NAME: starrail_oauth2_v2
+      OAUTH2_PROXY_COOKIE_SECURE: ${PORTAL_COOKIE_SECURE:-false}
+      OAUTH2_PROXY_COOKIE_SAMESITE: lax
+      OAUTH2_PROXY_COOKIE_EXPIRE: 8h
+      OAUTH2_PROXY_COOKIE_REFRESH: 2h
+      OAUTH2_PROXY_COOKIE_HTTPONLY: "true"
+      OAUTH2_PROXY_EMAIL_DOMAINS: "*"
+      OAUTH2_PROXY_SCOPE: "openid profile email groups"
+      OAUTH2_PROXY_OIDC_GROUPS_CLAIM: groups
+      OAUTH2_PROXY_REDIRECT_URL: ${PUBLIC_BASE_URL:?}/oauth2/callback
+      OAUTH2_PROXY_HTTP_ADDRESS: 0.0.0.0:4180
+      OAUTH2_PROXY_UPSTREAMS: static://200
+      OAUTH2_PROXY_REVERSE_PROXY: "true"
+      OAUTH2_PROXY_SET_XAUTHREQUEST: "true"
+      OAUTH2_PROXY_SESSION_STORE_TYPE: redis
+      OAUTH2_PROXY_REDIS_CONNECTION_URL: redis://:${REDIS_PASSWORD:?}@redis:6379/0
+      OAUTH2_PROXY_SKIP_PROVIDER_BUTTON: "true"
+      OAUTH2_PROXY_APPROVAL_PROMPT: "none"
+      OAUTH2_PROXY_PASS_ACCESS_TOKEN: "false"
+      OAUTH2_PROXY_CODE_CHALLENGE_METHOD: S256
+      OAUTH2_PROXY_INSECURE_OIDC_ALLOW_UNVERIFIED_EMAIL: "true"
+    expose:
+      - "4180"
+    depends_on:
+      dex:
+        condition: service_started
+      gateway:
+        condition: service_started
+    read_only: true
+    tmpfs:
+      - /tmp
+    security_opt:
+      - no-new-privileges:true
+    mem_limit: 128m
+    cpus: 0.5
+    logging:
+      driver: json-file
+      options: { max-size: "10m", max-file: "3" }
+    networks:
+      - portal
+
+  postgres:
+    image: postgres:16-alpine
+    container_name: starrail-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: starrail
+      POSTGRES_USER: starrail
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in .env}
+      TZ: Asia/Shanghai
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U starrail -d starrail"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    mem_limit: 512m
+    cpus: 1.0
+    logging:
+      driver: json-file
+      options: { max-size: "10m", max-file: "3" }
+    networks:
+      - portal
+
+  redis:
+    image: redis:7.2-alpine
+    container_name: starrail-redis
+    restart: unless-stopped
+    command: ["redis-server", "--appendonly", "yes", "--requirepass", "${REDIS_PASSWORD:?set REDIS_PASSWORD in .env}"]
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "${REDIS_PASSWORD:?set REDIS_PASSWORD in .env}", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    mem_limit: 256m
+    cpus: 0.5
+    logging:
+      driver: json-file
+      options: { max-size: "10m", max-file: "3" }
+    networks:
+      - portal
+
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    image: starrail/portal-api:0.3.0
+    container_name: starrail-backend
+    restart: unless-stopped
+    environment:
+      AUTH_MODE: proxy
+      PORTAL_PROXY_SECRET: ${PORTAL_PROXY_SECRET:?}
+      PORTAL_SESSION_SECRET: ${PORTAL_SESSION_SECRET:?}
+      PORTAL_COLLECTOR_TOKEN: ${PORTAL_COLLECTOR_TOKEN:?set PORTAL_COLLECTOR_TOKEN in .env}
+      PORTAL_COOKIE_SECURE: ${PORTAL_COOKIE_SECURE:-false}
+      PORTAL_CONFIG_PATH: /app/config.json
+      PORTAL_USERS_FILE: /app/auth_users.json
+      PORTAL_DATABASE_URL: postgresql://starrail:${POSTGRES_PASSWORD:?}@postgres:5432/starrail
+      PORTAL_REDIS_URL: redis://:${REDIS_PASSWORD:?}@redis:6379/0
+      PORTAL_DB_REQUIRED: "1"
+      PORTAL_REDIS_REQUIRED: "1"
+      PORTAL_COMMAND_DIR: /app/portal-commands
+      PORTAL_PROBE_HOST: ${PORTAL_PROBE_HOST:-192.168.112.230}
+      PORTAL_SLURM_HOST: ${PORTAL_SLURM_HOST:-192.168.112.230}
+      PORTAL_IDENTITY_MODE: ${PORTAL_IDENTITY_MODE:-local}
+      PORTAL_GATEWAY_URL: ${PORTAL_GATEWAY_URL:-http://192.168.112.230:8080}
+      PORTAL_PROMETHEUS_URL: ${PORTAL_PROMETHEUS_URL:-http://192.168.112.230:9090}
+      PORTAL_LDAP_URL: ${PORTAL_LDAP_URL:-ldap://192.168.112.230:389}
+      PORTAL_LDAP_BIND_DN: ${PORTAL_LDAP_BIND_DN:-uid=dex-bind,cn=users,cn=accounts,dc=hpc,dc=internal}
+      PORTAL_LDAP_BIND_PASSWORD: ${PORTAL_LDAP_BIND_PASSWORD:-Admin@12345}
+      PORTAL_LDAP_BASE_DN: ${PORTAL_LDAP_BASE_DN:-dc=hpc,dc=internal}
+      TZ: Asia/Shanghai
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    expose:
+      - "8000"
+    volumes:
+      - /home/test/ip_registry.json:/app/ip_registry.json:ro
+      - /home/test/ip_alerts.jsonl:/app/ip_alerts.jsonl:ro
+      - /home/test/portal-commands:/app/portal-commands
+    read_only: true
+    tmpfs:
+      - /tmp
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    mem_limit: 256m
+    cpus: 0.5
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/healthz', timeout=2)"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 5s
+    logging:
+      driver: json-file
+      options: { max-size: "10m", max-file: "3" }
+    networks:
+      - portal
+
+  gateway:
+    build:
+      context: .
+      dockerfile: gateway/Dockerfile
+    image: starrail/portal-gateway:0.3.0
+    container_name: starrail-gateway
+    restart: unless-stopped
+    ports:
+      - "${PORTAL_HTTP_PORT:-8080}:8080"
+    environment:
+      PORTAL_PROXY_SECRET: ${PORTAL_PROXY_SECRET:?}
+      TZ: Asia/Shanghai
+    volumes:
+      - ./gateway/cluster-b.conf:/etc/nginx/conf.d/cluster-b.conf:ro
+    depends_on:
+      backend:
+        condition: service_healthy
+      dex:
+        condition: service_started
+    read_only: true
+    tmpfs:
+      - /tmp
+      - /var/cache/nginx
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    mem_limit: 128m
+    cpus: 0.5
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "/dev/null", "http://127.0.0.1:8080/healthz"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 10s
+    logging:
+      driver: json-file
+      options: { max-size: "10m", max-file: "3" }
+    networks:
+      - portal
+
+networks:
+  portal:
+    driver: bridge
+
+volumes:
+  dex-config:
+  postgres-data:
+  redis-data:

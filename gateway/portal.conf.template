@@ -1,0 +1,246 @@
+upstream portal_api {
+  server backend:8000;
+  keepalive 16;
+}
+
+server {
+  listen 8080;
+  server_name _;
+  root /usr/share/nginx/html;
+  index index.html;
+  absolute_redirect off;
+
+
+  # oauth2-proxy 启动时需要先访问本网关的 /dex 做 OIDC discovery，
+  # 因此这里必须使用运行时 DNS 解析，不能在启动时解析上游，否则会形成循环依赖。
+  resolver 127.0.0.11 valid=10s ipv6=off;
+  set $portal_oauth2 http://oauth2-proxy:4180;
+  set $portal_dex http://dex:5556;
+
+  add_header X-Content-Type-Options "nosniff" always;
+  add_header X-Frame-Options "DENY" always;
+  add_header Referrer-Policy "same-origin" always;
+  add_header Permissions-Policy "camera=(), microphone=(), geolocation=()" always;
+
+  # 容器/负载均衡健康检查，不经过身份认证。
+  location = /healthz {
+    access_log off;
+    default_type text/plain;
+    return 200 "ok\n";
+  }
+
+  # 统一登出：清 oauth2-proxy 会话后回首页（Dex 会话按设计由 IdP 侧统一清理）。
+  location = /logout {
+    return 302 /oauth2/sign_out?rd=/;
+  }
+
+  # auth_request 子请求：只允许内部调用。
+  location = /oauth2/auth {
+    internal;
+    proxy_pass $portal_oauth2;
+    proxy_pass_request_body off;
+    proxy_set_header Content-Length "";
+    proxy_set_header X-Original-URL $scheme://$http_host$request_uri;
+  }
+
+  # oauth2-proxy 登录/回调/登出。
+  location /oauth2/ {
+    proxy_pass $portal_oauth2;
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header X-Forwarded-Proto $scheme;
+  }
+
+  # Dex OIDC 端点（独立路径，等价于设计中的 dex 独立域名）。
+  # 注意：Dex issuer 带 /dex 路径，proxy_pass 不能加尾斜杠，否则会剥离前缀导致 404。
+  location /dex/ {
+    proxy_pass $portal_dex;
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header X-Forwarded-Proto $scheme;
+  }
+
+  # 设计说明书中的 SPA 挂载点 /portal；本原型在 8080 根路径提供，保留兼容跳转。
+  location = /portal {
+    return 302 /;
+  }
+  location = /portal/ {
+    return 302 /;
+  }
+
+  # 未认证访问受保护资源：跳转 OIDC 登录，登录后回到原地址。
+  location @oauth2_signin {
+    return 302 /oauth2/sign_in?rd=$request_uri;
+  }
+
+  # GPU agent 上报：不走 OIDC 会话，使用独立采集 token（后端校验）；仅建议内网开放。
+  location = /api/v1/collector/ingest {
+    proxy_pass http://portal_api;
+    proxy_http_version 1.1;
+    proxy_set_header Connection "";
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header X-Request-Id $request_id;
+    proxy_connect_timeout 5s;
+    proxy_read_timeout 15s;
+  }
+
+  # Alertmanager 回调：内部 token 校验，不走用户 OIDC。
+  location = /api/v1/alerts/webhook {
+    proxy_pass http://portal_api;
+    proxy_http_version 1.1;
+    proxy_set_header Connection "";
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header X-Request-Id $request_id;
+    proxy_connect_timeout 5s;
+    proxy_read_timeout 15s;
+  }
+
+  # SSE：长连接关闭缓冲，认证仍由 oauth2-proxy 完成。
+  location /api/v1/stream/ {
+    auth_request /oauth2/auth;
+    error_page 401 = @oauth2_signin;
+
+    auth_request_set $stream_user $upstream_http_x_auth_request_preferred_username;
+    auth_request_set $stream_email $upstream_http_x_auth_request_email;
+    auth_request_set $stream_groups $upstream_http_x_auth_request_groups;
+
+    proxy_pass http://portal_api;
+    proxy_http_version 1.1;
+    proxy_set_header Connection "";
+    proxy_set_header Host $http_host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header X-Auth-Request-User $stream_user;
+    proxy_set_header X-Auth-Request-Email $stream_email;
+    proxy_set_header X-Auth-Request-Groups $stream_groups;
+    proxy_set_header X-Portal-Proxy-Secret "${PORTAL_PROXY_SECRET}";
+    proxy_buffering off;
+    proxy_cache off;
+    proxy_read_timeout 1h;
+    proxy_send_timeout 1h;
+  }
+
+  # FreeIPA 管理：同源 HTTP 反代，避免内部自签名证书告警。
+  location /ipa/ {
+    proxy_pass https://192.168.112.230;
+    proxy_ssl_verify off;
+    proxy_set_header Host $http_host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header X-Forwarded-Proto $scheme;
+    proxy_set_header X-Forwarded-Host $http_host;
+    proxy_cookie_flags ipa_session nosecure;
+    proxy_hide_header Content-Security-Policy;
+    add_header X-Content-Type-Options "nosniff" always;
+    add_header X-Frame-Options "DENY" always;
+    add_header Referrer-Policy "same-origin" always;
+    proxy_connect_timeout 5s;
+    proxy_read_timeout 30s;
+  }
+  # 平台 API：认证由 oauth2-proxy 完成，身份头只由本网关注入。
+  location /api/ {
+    auth_request /oauth2/auth;
+    error_page 401 = @oauth2_signin;
+
+    auth_request_set $auth_user $upstream_http_x_auth_request_preferred_username;
+    auth_request_set $auth_email $upstream_http_x_auth_request_email;
+    auth_request_set $auth_groups $upstream_http_x_auth_request_groups;
+
+    proxy_pass http://portal_api;
+    proxy_http_version 1.1;
+    proxy_set_header Connection "";
+    proxy_set_header Host $http_host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header X-Forwarded-Proto $scheme;
+    proxy_set_header X-Request-Id $request_id;
+    proxy_set_header X-Auth-Request-User $auth_user;
+    proxy_set_header X-Auth-Request-Email $auth_email;
+    proxy_set_header X-Auth-Request-Groups $auth_groups;
+    proxy_set_header X-Portal-Proxy-Secret "${PORTAL_PROXY_SECRET}";
+    proxy_connect_timeout 5s;
+    proxy_read_timeout 30s;
+  }
+
+  location /cluster-b/api/v1/stream/ {
+    auth_request /oauth2/auth;
+    error_page 401 = @oauth2_signin;
+    auth_request_set $streamb_user $upstream_http_x_auth_request_preferred_username;
+    auth_request_set $streamb_email $upstream_http_x_auth_request_email;
+    auth_request_set $streamb_groups $upstream_http_x_auth_request_groups;
+    proxy_pass http://cluster_b_backend/api/v1/stream/;
+    proxy_http_version 1.1;
+    proxy_set_header Connection "";
+    proxy_set_header Host $http_host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header X-Auth-Request-User $streamb_user;
+    proxy_set_header X-Auth-Request-Email $streamb_email;
+    proxy_set_header X-Auth-Request-Groups $streamb_groups;
+    proxy_set_header X-Portal-Proxy-Secret "${PORTAL_PROXY_SECRET}";
+    proxy_buffering off;
+    proxy_cache off;
+    proxy_read_timeout 1h;
+    proxy_send_timeout 1h;
+  }
+
+  # 公用前端 → 第二集群独立后端。认证和身份头复用本网关，
+  # 后端只信任带同一 PORTAL_PROXY_SECRET 的请求。
+  location /cluster-b/api/ {
+    auth_request /oauth2/auth;
+    error_page 401 = @oauth2_signin;
+
+    auth_request_set $auth_user_b $upstream_http_x_auth_request_preferred_username;
+    auth_request_set $auth_email_b $upstream_http_x_auth_request_email;
+    auth_request_set $auth_groups_b $upstream_http_x_auth_request_groups;
+
+    proxy_pass http://cluster_b_backend/api/;
+    proxy_http_version 1.1;
+    proxy_set_header Connection "";
+    proxy_set_header Host $http_host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header X-Forwarded-Proto $scheme;
+    proxy_set_header X-Request-Id $request_id;
+    proxy_set_header X-Auth-Request-User $auth_user_b;
+    proxy_set_header X-Auth-Request-Email $auth_email_b;
+    proxy_set_header X-Auth-Request-Groups $auth_groups_b;
+    proxy_set_header X-Portal-Proxy-Secret "${PORTAL_PROXY_SECRET}";
+    proxy_connect_timeout 5s;
+    proxy_read_timeout 30s;
+  }
+
+  # SPA 静态资源：同样要求登录（未认证跳 Dex）。
+  # 未登录深链接：先保存 hash，再进入 OAuth 登录，登录后由前端恢复路由。
+  location = /__boot {
+    default_type text/html;
+    add_header Cache-Control "no-store" always;
+    add_header X-Content-Type-Options "nosniff" always;
+    add_header X-Frame-Options "DENY" always;
+    add_header Referrer-Policy "same-origin" always;
+    return 200 '<!doctype html><script>try{if(location.hash)sessionStorage.setItem("hpc-depth",location.hash)}catch(e){}location.replace("/oauth2/sign_in?rd=/")</script>';
+  }
+  location / {
+    auth_request /oauth2/auth;
+    error_page 401 = /__boot;
+    # CSP 只作用于 SPA；Dex / oauth2-proxy 的登录页保留其自带内联资源。
+    add_header X-Content-Type-Options "nosniff" always;
+    add_header X-Frame-Options "DENY" always;
+    add_header Referrer-Policy "same-origin" always;
+    add_header Permissions-Policy "camera=(), microphone=(), geolocation=()" always;
+    add_header Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'" always;
+    try_files $uri /index.html;
+  }
+}
+
+
+
+
+
+

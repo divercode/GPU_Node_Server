@@ -1,0 +1,614 @@
+{
+  "checks": [
+    {
+      "route": "entrance",
+      "action": "settings",
+      "url": "http://192.168.112.230:8080/#/entrance",
+      "generic_toast": false,
+      "overlay": true,
+      "page_errors": [],
+      "toasts": []
+    },
+    {
+      "route": "entrance",
+      "action": "token-info",
+      "url": "http://192.168.112.230:8080/#/entrance",
+      "generic_toast": false,
+      "overlay": true,
+      "page_errors": [],
+      "toasts": []
+    },
+    {
+      "route": "entrance",
+      "action": "theme",
+      "url": "http://192.168.112.230:8080/#/entrance",
+      "generic_toast": false,
+      "overlay": false,
+      "page_errors": [],
+      "toasts": [
+        "已切换到浅色主题"
+      ]
+    },
+    {
+      "route": "entrance",
+      "action": "shortcuts",
+      "url": "http://192.168.112.230:8080/#/entrance",
+      "generic_toast": false,
+      "overlay": true,
+      "page_errors": [],
+      "toasts": [
+        "已切换到浅色主题"
+      ]
+    },
+    {
+      "route": "dashboard",
+      "action": "settings",
+      "url": "http://192.168.112.230:8080/#/dashboard",
+      "generic_toast": false,
+      "overlay": true,
+      "page_errors": [],
+      "toasts": []
+    },
+    {
+      "route": "dashboard",
+      "action": "token-info",
+      "url": "http://192.168.112.230:8080/#/dashboard",
+      "generic_toast": false,
+      "overlay": true,
+      "page_errors": [],
+      "toasts": []
+    },
+    {
+      "route": "dashboard",
+      "action": "theme",
+      "url": "http://192.168.112.230:8080/#/dashboard",
+      "generic_toast": false,
+      "overlay": false,
+      "page_errors": [],
+      "toasts": [
+        "已切换到深色主题"
+      ]
+    },
+    {
+      "route": "dashboard",
+      "action": "shortcuts",
+      "url": "http://192.168.112.230:8080/#/dashboard",
+      "generic_toast": false,
+      "overlay": true,
+      "page_errors": [],
+      "toasts": [
+        "已切换到深色主题"
+      ]
+    },
+    {
+      "route": "catalog",
+      "action": "resource-info",
+      "url": "http://192.168.112.230:8080/#/catalog",
+      "generic_toast": false,
+      "overlay": true,
+      "page_errors": [],
+      "toasts": []
+    },
+    {
+      "route": "catalog",
+      "action": "save-template",
+      "url": "http://192.168.112.230:8080/#/catalog",
+      "generic_toast": false,
+      "overlay": false,
+      "page_errors": [],
+      "toasts": [
+        "作业模板已保存到当前浏览器"
+      ]
+    },
+    {
+      "route": "catalog",
+      "action": "settings",
+      "url": "http://192.168.112.230:8080/#/catalog",
+      "generic_toast": false,
+      "overlay": true,
+      "page_errors": [],
+      "toasts": [
+        "作业模板已保存到当前浏览器"
+      ]
+    },
+    {
+      "route": "catalog",
+      "action": "token-info",
+      "url": "http://192.168.112.230:8080/#/catalog",
+      "generic_toast": false,
+      "overlay": true,
+      "page_errors": [],
+      "toasts": []
+    },
+    {
+      "route": "catalog",
+      "action": "theme",
+      "url": "http://192.168.112.230:8080/#/catalog",
+      "generic_toast": false,
+      "overlay": false,
+      "page_errors": [],
+      "toasts": [
+        "已切换到浅色主题"
+      ]
+    },
+    {
+      "route": "catalog",
+      "action": "shortcuts",
+      "url": "http://192.168.112.230:8080/#/catalog",
+      "generic_toast": false,
+      "overlay": true,
+      "page_errors": [],
+      "toasts": [
+        "已切换到浅色主题"
+      ]
+    },
+    {
+      "route": "jobs",
+      "action": "settings",
+      "url": "http://192.168.112.230:8080/#/jobs",
+      "generic_toast": false,
+      "overlay": true,
+      "page_errors": [],
+      "toasts": []
+    },
+    {
+      "route": "jobs",
+      "action": "token-info",
+      "url": "http://192.168.112.230:8080/#/jobs",
+      "generic_toast": false,
+      "overlay": true,
+      "page_errors": [],
+      "toasts": []
+    },
+    {
+      "route": "jobs",
+      "action": "theme",
+      "url": "http://192.168.112.230:8080/#/jobs",
+      "generic_toast": false,
+      "overlay": false,
+      "page_errors": [],
+      "toasts": [
+        "已切换到深色主题"
+      ]
+    },
+    {
+      "route": "jobs",
+      "action": "shortcuts",
+      "url": "http://192.168.112.230:8080/#/jobs",
+      "generic_toast": false,
+      "overlay": true,
+      "page_errors": [],
+      "toasts": [
+        "已切换到深色主题"
+      ]
+    },
+    {
+      "route": "monitor",
+      "action": "refresh",
+      "url": "http://192.168.112.230:8080/#/monitor",
+      "generic_toast": false,
+      "overlay": false,
+      "page_errors": [],
+      "toasts": []
+    },
+    {
+      "route": "monitor",
+      "action": "settings",
+      "url": "http://192.168.112.230:8080/#/monitor",
+      "generic_toast": false,
+      "overlay": true,
+      "page_errors": [],
+      "toasts": [
+        "已刷新当前数据"
+      ]
+    },
+    {
+      "route": "monitor",
+      "action": "token-info",
+      "url": "http://192.168.112.230:8080/#/monitor",
+      "generic_toast": false,
+      "overlay": true,
+      "page_errors": [],
+      "toasts": [
+        "已刷新当前数据"
+      ]
+    },
+    {
+      "route": "monitor",
+      "action": "theme",
+      "url": "http://192.168.112.230:8080/#/monitor",
+      "generic_toast": false,
+      "overlay": false,
+      "page_errors": [],
+      "toasts": [
+        "已切换到浅色主题"
+      ]
+    },
+    {
+      "route": "monitor",
+      "action": "shortcuts",
+      "url": "http://192.168.112.230:8080/#/monitor",
+      "generic_toast": false,
+      "overlay": true,
+      "page_errors": [],
+      "toasts": [
+        "已切换到浅色主题"
+      ]
+    },
+    {
+      "route": "gpus",
+      "action": "refresh",
+      "url": "http://192.168.112.230:8080/#/gpus",
+      "generic_toast": false,
+      "overlay": false,
+      "page_errors": [],
+      "toasts": []
+    },
+    {
+      "route": "gpus",
+      "action": "settings",
+      "url": "http://192.168.112.230:8080/#/gpus",
+      "generic_toast": false,
+      "overlay": true,
+      "page_errors": [],
+      "toasts": [
+        "已刷新当前数据"
+      ]
+    },
+    {
+      "route": "gpus",
+      "action": "token-info",
+      "url": "http://192.168.112.230:8080/#/gpus",
+      "generic_toast": false,
+      "overlay": true,
+      "page_errors": [],
+      "toasts": [
+        "已刷新当前数据"
+      ]
+    },
+    {
+      "route": "gpus",
+      "action": "theme",
+      "url": "http://192.168.112.230:8080/#/gpus",
+      "generic_toast": false,
+      "overlay": false,
+      "page_errors": [],
+      "toasts": [
+        "已切换到深色主题"
+      ]
+    },
+    {
+      "route": "gpus",
+      "action": "shortcuts",
+      "url": "http://192.168.112.230:8080/#/gpus",
+      "generic_toast": false,
+      "overlay": true,
+      "page_errors": [],
+      "toasts": [
+        "已切换到深色主题"
+      ]
+    },
+    {
+      "route": "alerts",
+      "action": "settings",
+      "url": "http://192.168.112.230:8080/#/alerts",
+      "generic_toast": false,
+      "overlay": true,
+      "page_errors": [],
+      "toasts": []
+    },
+    {
+      "route": "alerts",
+      "action": "token-info",
+      "url": "http://192.168.112.230:8080/#/alerts",
+      "generic_toast": false,
+      "overlay": true,
+      "page_errors": [],
+      "toasts": []
+    },
+    {
+      "route": "alerts",
+      "action": "theme",
+      "url": "http://192.168.112.230:8080/#/alerts",
+      "generic_toast": false,
+      "overlay": false,
+      "page_errors": [],
+      "toasts": [
+        "已切换到浅色主题"
+      ]
+    },
+    {
+      "route": "alerts",
+      "action": "shortcuts",
+      "url": "http://192.168.112.230:8080/#/alerts",
+      "generic_toast": false,
+      "overlay": true,
+      "page_errors": [],
+      "toasts": [
+        "已切换到浅色主题"
+      ]
+    },
+    {
+      "route": "rules",
+      "action": "rule-drawer",
+      "url": "http://192.168.112.230:8080/#/rules",
+      "generic_toast": false,
+      "overlay": true,
+      "page_errors": [],
+      "toasts": []
+    },
+    {
+      "route": "rules",
+      "action": "settings",
+      "url": "http://192.168.112.230:8080/#/rules",
+      "generic_toast": false,
+      "overlay": true,
+      "page_errors": [],
+      "toasts": []
+    },
+    {
+      "route": "rules",
+      "action": "token-info",
+      "url": "http://192.168.112.230:8080/#/rules",
+      "generic_toast": false,
+      "overlay": true,
+      "page_errors": [],
+      "toasts": []
+    },
+    {
+      "route": "rules",
+      "action": "theme",
+      "url": "http://192.168.112.230:8080/#/rules",
+      "generic_toast": false,
+      "overlay": false,
+      "page_errors": [],
+      "toasts": [
+        "已切换到深色主题"
+      ]
+    },
+    {
+      "route": "rules",
+      "action": "shortcuts",
+      "url": "http://192.168.112.230:8080/#/rules",
+      "generic_toast": false,
+      "overlay": true,
+      "page_errors": [],
+      "toasts": [
+        "已切换到深色主题"
+      ]
+    },
+    {
+      "route": "usage",
+      "action": "settings",
+      "url": "http://192.168.112.230:8080/#/usage",
+      "generic_toast": false,
+      "overlay": true,
+      "page_errors": [],
+      "toasts": []
+    },
+    {
+      "route": "usage",
+      "action": "token-info",
+      "url": "http://192.168.112.230:8080/#/usage",
+      "generic_toast": false,
+      "overlay": true,
+      "page_errors": [],
+      "toasts": []
+    },
+    {
+      "route": "usage",
+      "action": "theme",
+      "url": "http://192.168.112.230:8080/#/usage",
+      "generic_toast": false,
+      "overlay": false,
+      "page_errors": [],
+      "toasts": [
+        "已切换到浅色主题"
+      ]
+    },
+    {
+      "route": "usage",
+      "action": "shortcuts",
+      "url": "http://192.168.112.230:8080/#/usage",
+      "generic_toast": false,
+      "overlay": true,
+      "page_errors": [],
+      "toasts": [
+        "已切换到浅色主题"
+      ]
+    },
+    {
+      "route": "users",
+      "action": "refresh-users",
+      "url": "http://192.168.112.230:8080/#/users",
+      "generic_toast": false,
+      "overlay": false,
+      "page_errors": [],
+      "toasts": [
+        "用户目录已同步"
+      ]
+    },
+    {
+      "route": "users",
+      "action": "user-drawer",
+      "url": "http://192.168.112.230:8080/#/users",
+      "generic_toast": false,
+      "overlay": true,
+      "page_errors": [],
+      "toasts": [
+        "用户目录已同步"
+      ]
+    },
+    {
+      "route": "users",
+      "action": "settings",
+      "url": "http://192.168.112.230:8080/#/users",
+      "generic_toast": false,
+      "overlay": true,
+      "page_errors": [],
+      "toasts": [
+        "用户目录已同步"
+      ]
+    },
+    {
+      "route": "users",
+      "action": "token-info",
+      "url": "http://192.168.112.230:8080/#/users",
+      "generic_toast": false,
+      "overlay": true,
+      "page_errors": [],
+      "toasts": []
+    },
+    {
+      "route": "users",
+      "action": "theme",
+      "url": "http://192.168.112.230:8080/#/users",
+      "generic_toast": false,
+      "overlay": false,
+      "page_errors": [],
+      "toasts": [
+        "已切换到深色主题"
+      ]
+    },
+    {
+      "route": "users",
+      "action": "shortcuts",
+      "url": "http://192.168.112.230:8080/#/users",
+      "generic_toast": false,
+      "overlay": true,
+      "page_errors": [],
+      "toasts": [
+        "已切换到深色主题"
+      ]
+    },
+    {
+      "route": "audit",
+      "action": "verify-audit",
+      "url": "http://192.168.112.230:8080/#/audit",
+      "generic_toast": false,
+      "overlay": false,
+      "page_errors": [],
+      "toasts": [
+        "哈希链正常：已校验 102 条事件"
+      ]
+    },
+    {
+      "route": "audit",
+      "action": "audit-more",
+      "url": "http://192.168.112.230:8080/#/audit",
+      "generic_toast": false,
+      "overlay": false,
+      "page_errors": [],
+      "toasts": [
+        "哈希链正常：已校验 102 条事件"
+      ]
+    },
+    {
+      "route": "audit",
+      "action": "settings",
+      "url": "http://192.168.112.230:8080/#/audit",
+      "generic_toast": false,
+      "overlay": true,
+      "page_errors": [],
+      "toasts": [
+        "哈希链正常：已校验 102 条事件"
+      ]
+    },
+    {
+      "route": "audit",
+      "action": "token-info",
+      "url": "http://192.168.112.230:8080/#/audit",
+      "generic_toast": false,
+      "overlay": true,
+      "page_errors": [],
+      "toasts": []
+    },
+    {
+      "route": "audit",
+      "action": "theme",
+      "url": "http://192.168.112.230:8080/#/audit",
+      "generic_toast": false,
+      "overlay": false,
+      "page_errors": [],
+      "toasts": [
+        "已切换到浅色主题"
+      ]
+    },
+    {
+      "route": "audit",
+      "action": "shortcuts",
+      "url": "http://192.168.112.230:8080/#/audit",
+      "generic_toast": false,
+      "overlay": true,
+      "page_errors": [],
+      "toasts": [
+        "已切换到浅色主题"
+      ]
+    },
+    {
+      "route": "system",
+      "action": "runbook",
+      "url": "http://192.168.112.230:8080/#/system",
+      "generic_toast": false,
+      "overlay": true,
+      "page_errors": [],
+      "toasts": []
+    },
+    {
+      "route": "system",
+      "action": "recheck-system",
+      "url": "http://192.168.112.230:8080/#/system",
+      "generic_toast": false,
+      "overlay": false,
+      "page_errors": [],
+      "toasts": [
+        "系统状态已重新检测"
+      ]
+    },
+    {
+      "route": "system",
+      "action": "settings",
+      "url": "http://192.168.112.230:8080/#/system",
+      "generic_toast": false,
+      "overlay": true,
+      "page_errors": [],
+      "toasts": [
+        "系统状态已重新检测"
+      ]
+    },
+    {
+      "route": "system",
+      "action": "token-info",
+      "url": "http://192.168.112.230:8080/#/system",
+      "generic_toast": false,
+      "overlay": true,
+      "page_errors": [],
+      "toasts": [
+        "系统状态已重新检测"
+      ]
+    },
+    {
+      "route": "system",
+      "action": "theme",
+      "url": "http://192.168.112.230:8080/#/system",
+      "generic_toast": false,
+      "overlay": false,
+      "page_errors": [],
+      "toasts": [
+        "已切换到深色主题"
+      ]
+    },
+    {
+      "route": "system",
+      "action": "shortcuts",
+      "url": "http://192.168.112.230:8080/#/system",
+      "generic_toast": false,
+      "overlay": true,
+      "page_errors": [],
+      "toasts": [
+        "已切换到深色主题"
+      ]
+    }
+  ],
+  "errors": []
+}

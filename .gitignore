@@ -1,0 +1,11 @@
+.env
+.tmp/
+backend/__pycache__/
+backend/_cookies_*.txt
+backend/_nginx*
+backend/_mock_oauth.py
+backend/_docker-compose.exe
+dex/config.rendered.yaml
+**/__pycache__/
+frontend/preview/
+*.pyc

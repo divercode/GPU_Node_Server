@@ -1,0 +1,848 @@
+{
+  "routes": {
+    "entrance": {
+      "url": "http://192.168.112.230:8080/#/entrance",
+      "actions": [
+        {
+          "action": "settings",
+          "text": "个人设置Ctrl ,",
+          "id": ""
+        },
+        {
+          "action": "token-info",
+          "text": "API Token",
+          "id": ""
+        },
+        {
+          "action": "theme",
+          "text": "切换主题深 / 浅",
+          "id": ""
+        },
+        {
+          "action": "shortcuts",
+          "text": "键盘快捷键?",
+          "id": ""
+        },
+        {
+          "action": "settings",
+          "text": "通知设置",
+          "id": ""
+        },
+        {
+          "action": "logout",
+          "text": "退出登录",
+          "id": ""
+        }
+      ],
+      "goto": [
+        "#/alerts",
+        "#/audit"
+      ],
+      "console_errors": [],
+      "generic_toast": false,
+      "loading_stuck": false
+    },
+    "dashboard": {
+      "url": "http://192.168.112.230:8080/#/dashboard",
+      "actions": [
+        {
+          "action": "export",
+          "text": "导出日报",
+          "id": ""
+        },
+        {
+          "action": "submit-job",
+          "text": "提交作业",
+          "id": ""
+        },
+        {
+          "action": "settings",
+          "text": "个人设置Ctrl ,",
+          "id": ""
+        },
+        {
+          "action": "token-info",
+          "text": "API Token",
+          "id": ""
+        },
+        {
+          "action": "theme",
+          "text": "切换主题深 / 浅",
+          "id": ""
+        },
+        {
+          "action": "shortcuts",
+          "text": "键盘快捷键?",
+          "id": ""
+        },
+        {
+          "action": "settings",
+          "text": "通知设置",
+          "id": ""
+        },
+        {
+          "action": "logout",
+          "text": "退出登录",
+          "id": ""
+        }
+      ],
+      "goto": [
+        "#/alerts",
+        "#/audit",
+        "#/jobs"
+      ],
+      "console_errors": [],
+      "generic_toast": false,
+      "loading_stuck": false
+    },
+    "catalog": {
+      "url": "http://192.168.112.230:8080/#/catalog",
+      "actions": [
+        {
+          "action": "resource-info",
+          "text": "资源说明",
+          "id": ""
+        },
+        {
+          "action": "submit-job",
+          "text": "使用该分区",
+          "id": ""
+        },
+        {
+          "action": "submit-job",
+          "text": "去提交作业",
+          "id": ""
+        },
+        {
+          "action": "save-template",
+          "text": "保存为模板",
+          "id": ""
+        },
+        {
+          "action": "settings",
+          "text": "个人设置Ctrl ,",
+          "id": ""
+        },
+        {
+          "action": "token-info",
+          "text": "API Token",
+          "id": ""
+        },
+        {
+          "action": "theme",
+          "text": "切换主题深 / 浅",
+          "id": ""
+        },
+        {
+          "action": "shortcuts",
+          "text": "键盘快捷键?",
+          "id": ""
+        },
+        {
+          "action": "settings",
+          "text": "通知设置",
+          "id": ""
+        },
+        {
+          "action": "logout",
+          "text": "退出登录",
+          "id": ""
+        }
+      ],
+      "goto": [
+        "#/alerts",
+        "#/audit"
+      ],
+      "console_errors": [],
+      "generic_toast": false,
+      "loading_stuck": false
+    },
+    "jobs": {
+      "url": "http://192.168.112.230:8080/#/jobs",
+      "actions": [
+        {
+          "action": "export",
+          "text": "导出",
+          "id": ""
+        },
+        {
+          "action": "submit-job",
+          "text": "提交作业",
+          "id": ""
+        },
+        {
+          "action": "settings",
+          "text": "个人设置Ctrl ,",
+          "id": ""
+        },
+        {
+          "action": "token-info",
+          "text": "API Token",
+          "id": ""
+        },
+        {
+          "action": "theme",
+          "text": "切换主题深 / 浅",
+          "id": ""
+        },
+        {
+          "action": "shortcuts",
+          "text": "键盘快捷键?",
+          "id": ""
+        },
+        {
+          "action": "settings",
+          "text": "通知设置",
+          "id": ""
+        },
+        {
+          "action": "logout",
+          "text": "退出登录",
+          "id": ""
+        }
+      ],
+      "goto": [
+        "#/alerts",
+        "#/audit"
+      ],
+      "console_errors": [],
+      "generic_toast": false,
+      "loading_stuck": false
+    },
+    "monitor": {
+      "url": "http://192.168.112.230:8080/#/monitor",
+      "actions": [
+        {
+          "action": "refresh",
+          "text": "刷新",
+          "id": ""
+        },
+        {
+          "action": "export",
+          "text": "导出快照",
+          "id": ""
+        },
+        {
+          "action": "settings",
+          "text": "个人设置Ctrl ,",
+          "id": ""
+        },
+        {
+          "action": "token-info",
+          "text": "API Token",
+          "id": ""
+        },
+        {
+          "action": "theme",
+          "text": "切换主题深 / 浅",
+          "id": ""
+        },
+        {
+          "action": "shortcuts",
+          "text": "键盘快捷键?",
+          "id": ""
+        },
+        {
+          "action": "settings",
+          "text": "通知设置",
+          "id": ""
+        },
+        {
+          "action": "logout",
+          "text": "退出登录",
+          "id": ""
+        }
+      ],
+      "goto": [
+        "#/alerts",
+        "#/audit",
+        "#/gpus"
+      ],
+      "console_errors": [],
+      "generic_toast": false,
+      "loading_stuck": false
+    },
+    "gpus": {
+      "url": "http://192.168.112.230:8080/#/gpus",
+      "actions": [
+        {
+          "action": "export",
+          "text": "导出资产",
+          "id": ""
+        },
+        {
+          "action": "refresh",
+          "text": "刷新指标",
+          "id": ""
+        },
+        {
+          "action": "settings",
+          "text": "个人设置Ctrl ,",
+          "id": ""
+        },
+        {
+          "action": "token-info",
+          "text": "API Token",
+          "id": ""
+        },
+        {
+          "action": "theme",
+          "text": "切换主题深 / 浅",
+          "id": ""
+        },
+        {
+          "action": "shortcuts",
+          "text": "键盘快捷键?",
+          "id": ""
+        },
+        {
+          "action": "settings",
+          "text": "通知设置",
+          "id": ""
+        },
+        {
+          "action": "logout",
+          "text": "退出登录",
+          "id": ""
+        }
+      ],
+      "goto": [
+        "#/alerts",
+        "#/audit"
+      ],
+      "console_errors": [],
+      "generic_toast": false,
+      "loading_stuck": false
+    },
+    "alerts": {
+      "url": "http://192.168.112.230:8080/#/alerts",
+      "actions": [
+        {
+          "action": "export",
+          "text": "导出告警",
+          "id": ""
+        },
+        {
+          "action": "settings",
+          "text": "个人设置Ctrl ,",
+          "id": ""
+        },
+        {
+          "action": "token-info",
+          "text": "API Token",
+          "id": ""
+        },
+        {
+          "action": "theme",
+          "text": "切换主题深 / 浅",
+          "id": ""
+        },
+        {
+          "action": "shortcuts",
+          "text": "键盘快捷键?",
+          "id": ""
+        },
+        {
+          "action": "settings",
+          "text": "通知设置",
+          "id": ""
+        },
+        {
+          "action": "logout",
+          "text": "退出登录",
+          "id": ""
+        }
+      ],
+      "goto": [
+        "#/alerts",
+        "#/audit",
+        "#/rules"
+      ],
+      "console_errors": [],
+      "generic_toast": false,
+      "loading_stuck": false
+    },
+    "rules": {
+      "url": "http://192.168.112.230:8080/#/rules",
+      "actions": [
+        {
+          "action": "rule-drawer",
+          "text": "查看",
+          "id": "gpu-hardware/DcgmGpuTempHigh"
+        },
+        {
+          "action": "rule-drawer",
+          "text": "查看",
+          "id": "gpu-hardware/DcgmXidError"
+        },
+        {
+          "action": "rule-drawer",
+          "text": "查看",
+          "id": "platform/PrometheusTargetDown"
+        },
+        {
+          "action": "settings",
+          "text": "个人设置Ctrl ,",
+          "id": ""
+        },
+        {
+          "action": "token-info",
+          "text": "API Token",
+          "id": ""
+        },
+        {
+          "action": "theme",
+          "text": "切换主题深 / 浅",
+          "id": ""
+        },
+        {
+          "action": "shortcuts",
+          "text": "键盘快捷键?",
+          "id": ""
+        },
+        {
+          "action": "settings",
+          "text": "通知设置",
+          "id": ""
+        },
+        {
+          "action": "logout",
+          "text": "退出登录",
+          "id": ""
+        }
+      ],
+      "goto": [
+        "#/alerts",
+        "#/audit"
+      ],
+      "console_errors": [],
+      "generic_toast": false,
+      "loading_stuck": false
+    },
+    "usage": {
+      "url": "http://192.168.112.230:8080/#/usage",
+      "actions": [
+        {
+          "action": "export",
+          "text": "导出用量",
+          "id": ""
+        },
+        {
+          "action": "settings",
+          "text": "个人设置Ctrl ,",
+          "id": ""
+        },
+        {
+          "action": "token-info",
+          "text": "API Token",
+          "id": ""
+        },
+        {
+          "action": "theme",
+          "text": "切换主题深 / 浅",
+          "id": ""
+        },
+        {
+          "action": "shortcuts",
+          "text": "键盘快捷键?",
+          "id": ""
+        },
+        {
+          "action": "settings",
+          "text": "通知设置",
+          "id": ""
+        },
+        {
+          "action": "logout",
+          "text": "退出登录",
+          "id": ""
+        }
+      ],
+      "goto": [
+        "#/alerts",
+        "#/audit"
+      ],
+      "console_errors": [],
+      "generic_toast": false,
+      "loading_stuck": false
+    },
+    "users": {
+      "url": "http://192.168.112.230:8080/#/users",
+      "actions": [
+        {
+          "action": "export",
+          "text": "导出",
+          "id": ""
+        },
+        {
+          "action": "refresh-users",
+          "text": "立即同步",
+          "id": ""
+        },
+        {
+          "action": "user-drawer",
+          "text": "A\nAdministrator\nuid=1879200000\n\thpc-admi",
+          "id": ""
+        },
+        {
+          "action": "user-drawer",
+          "text": "详情",
+          "id": ""
+        },
+        {
+          "action": "user-drawer",
+          "text": "L\nLin Ya\nuid=1879200005\n\thpc-admins\t平台管理",
+          "id": ""
+        },
+        {
+          "action": "user-drawer",
+          "text": "详情",
+          "id": ""
+        },
+        {
+          "action": "user-drawer",
+          "text": "H\nHpc User\nuid=1879200007\n\tFreeIPA\t普通用户\t",
+          "id": ""
+        },
+        {
+          "action": "user-drawer",
+          "text": "详情",
+          "id": ""
+        },
+        {
+          "action": "settings",
+          "text": "个人设置Ctrl ,",
+          "id": ""
+        },
+        {
+          "action": "token-info",
+          "text": "API Token",
+          "id": ""
+        },
+        {
+          "action": "theme",
+          "text": "切换主题深 / 浅",
+          "id": ""
+        },
+        {
+          "action": "shortcuts",
+          "text": "键盘快捷键?",
+          "id": ""
+        },
+        {
+          "action": "settings",
+          "text": "通知设置",
+          "id": ""
+        },
+        {
+          "action": "logout",
+          "text": "退出登录",
+          "id": ""
+        }
+      ],
+      "goto": [
+        "#/alerts",
+        "#/audit"
+      ],
+      "console_errors": [],
+      "generic_toast": false,
+      "loading_stuck": false
+    },
+    "audit": {
+      "url": "http://192.168.112.230:8080/#/audit",
+      "actions": [
+        {
+          "action": "export",
+          "text": "导出",
+          "id": ""
+        },
+        {
+          "action": "verify-audit",
+          "text": "校验哈希链",
+          "id": ""
+        },
+        {
+          "action": "verify-audit",
+          "text": "校验哈希链",
+          "id": ""
+        },
+        {
+          "action": "audit-more",
+          "text": "加载更多",
+          "id": ""
+        },
+        {
+          "action": "settings",
+          "text": "个人设置Ctrl ,",
+          "id": ""
+        },
+        {
+          "action": "token-info",
+          "text": "API Token",
+          "id": ""
+        },
+        {
+          "action": "theme",
+          "text": "切换主题深 / 浅",
+          "id": ""
+        },
+        {
+          "action": "shortcuts",
+          "text": "键盘快捷键?",
+          "id": ""
+        },
+        {
+          "action": "settings",
+          "text": "通知设置",
+          "id": ""
+        },
+        {
+          "action": "logout",
+          "text": "退出登录",
+          "id": ""
+        }
+      ],
+      "goto": [
+        "#/alerts",
+        "#/audit"
+      ],
+      "console_errors": [],
+      "generic_toast": false,
+      "loading_stuck": false
+    },
+    "system": {
+      "url": "http://192.168.112.230:8080/#/system",
+      "actions": [
+        {
+          "action": "runbook",
+          "text": "查看 Runbook",
+          "id": ""
+        },
+        {
+          "action": "recheck-system",
+          "text": "重新检测",
+          "id": ""
+        },
+        {
+          "action": "settings",
+          "text": "个人设置Ctrl ,",
+          "id": ""
+        },
+        {
+          "action": "token-info",
+          "text": "API Token",
+          "id": ""
+        },
+        {
+          "action": "theme",
+          "text": "切换主题深 / 浅",
+          "id": ""
+        },
+        {
+          "action": "shortcuts",
+          "text": "键盘快捷键?",
+          "id": ""
+        },
+        {
+          "action": "settings",
+          "text": "通知设置",
+          "id": ""
+        },
+        {
+          "action": "logout",
+          "text": "退出登录",
+          "id": ""
+        }
+      ],
+      "goto": [
+        "#/alerts",
+        "#/audit"
+      ],
+      "console_errors": [],
+      "generic_toast": false,
+      "loading_stuck": false
+    },
+    "_safe_actions": {
+      "settings": {
+        "visible": true,
+        "generic_toast": false
+      },
+      "token-info": {
+        "visible": true,
+        "generic_toast": false
+      },
+      "shortcuts": {
+        "visible": true,
+        "generic_toast": false
+      },
+      "runbook": {
+        "visible": true,
+        "generic_toast": false
+      }
+    }
+  },
+  "api": {
+    "/api/v1/me": {
+      "status": 200,
+      "code": "OK",
+      "keys": [
+        "username",
+        "display_name",
+        "email",
+        "groups",
+        "roles",
+        "primary_role",
+        "role_label",
+        "account",
+        "auth_mode",
+        "client_ip",
+        "csrf"
+      ]
+    },
+    "/api/v1/cluster": {
+      "status": 200,
+      "code": "OK",
+      "keys": [
+        "cluster",
+        "environment",
+        "self_use",
+        "gpu_model",
+        "gpus_per_server",
+        "telemetry",
+        "servers",
+        "notes",
+        "gpu_total",
+        "catalog"
+      ]
+    },
+    "/api/v1/catalog": {
+      "status": 200,
+      "code": "OK",
+      "keys": [
+        "0"
+      ]
+    },
+    "/api/v1/nodes": {
+      "status": 200,
+      "code": "OK",
+      "keys": [
+        "nodes",
+        "time"
+      ]
+    },
+    "/api/v1/gpus": {
+      "status": 200,
+      "code": "OK",
+      "keys": [
+        "gpus",
+        "time"
+      ]
+    },
+    "/api/v1/jobs": {
+      "status": 200,
+      "code": "OK",
+      "keys": [
+        "jobs",
+        "time"
+      ]
+    },
+    "/api/v1/alerts": {
+      "status": 200,
+      "code": "OK",
+      "keys": [
+        "alerts",
+        "time"
+      ]
+    },
+    "/api/v1/usage": {
+      "status": 200,
+      "code": "OK",
+      "keys": [
+        "scope",
+        "range",
+        "gpu_hours",
+        "accounts",
+        "labels",
+        "series"
+      ]
+    },
+    "/api/v1/users": {
+      "status": 200,
+      "code": "OK",
+      "keys": [
+        "users",
+        "time"
+      ]
+    },
+    "/api/v1/audit": {
+      "status": 200,
+      "code": "OK",
+      "keys": [
+        "events",
+        "time"
+      ]
+    },
+    "/api/v1/audit/verify": {
+      "status": 200,
+      "code": "OK",
+      "keys": [
+        "valid",
+        "checked",
+        "head_hash",
+        "postgres",
+        "redis"
+      ]
+    },
+    "/api/v1/system/status": {
+      "status": 200,
+      "code": "OK",
+      "keys": [
+        "status",
+        "components",
+        "healthy",
+        "total",
+        "time"
+      ]
+    },
+    "/api/v1/system/ip-status": {
+      "status": 200,
+      "code": "OK",
+      "keys": [
+        "registry",
+        "alerts",
+        "time"
+      ]
+    },
+    "/api/v1/sync/status": {
+      "status": 200,
+      "code": "OK",
+      "keys": [
+        "ldap",
+        "last_sync",
+        "diff"
+      ]
+    },
+    "/api/v1/rules": {
+      "status": 200,
+      "code": "OK",
+      "keys": [
+        "rules",
+        "time",
+        "source"
+      ]
+    },
+    "/api/v1/trend?range=24h": {
+      "status": 200,
+      "code": "OK",
+      "keys": [
+        "range",
+        "labels",
+        "points",
+        "source",
+        "time"
+      ]
+    }
+  },
+  "errors": [],
+  "logged_in_url": "http://192.168.112.230:8080/"
+}
